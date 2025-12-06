@@ -69,7 +69,7 @@ jobs:
 
       # GCP認証（Vertex AI方式の場合のみ）
       - name: Authenticate to Google Cloud
-        if: secrets.GCP_WORKLOAD_IDENTITY_PROVIDER != ''
+        if: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER != '' }}
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
