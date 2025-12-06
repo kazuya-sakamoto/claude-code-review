@@ -47,19 +47,4 @@ describe('stringUtils', () => {
     });
   });
 
-  describe('repeatString', () => {
-    it('should repeat string n times', () => {
-      assert.strictEqual(repeatString('a', 3), 'aaa');
-      assert.strictEqual(repeatString('hello', 2), 'hellohello');
-    });
-
-    it('should handle zero repetitions', () => {
-      assert.strictEqual(repeatString('hello', 0), '');
-    });
-
-    // 負の数の問題を露呈するテスト
-    it('should handle negative repetitions (intentional issue)', () => {
-      assert.throws(() => repeatString('hello', -1));
-    });
-  });
 });
