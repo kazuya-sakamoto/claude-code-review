@@ -192,14 +192,12 @@ jobs:
               ? `*トリガー: @${context.actor} によるコメント*`
               : '*トリガー: 自動実行*';
 
-            const commentBody = `## 🤖 Claude Code レビュー結果
-
-${reviewContent}
-
----
-*このレビューは Claude Code により自動生成されました*
-${triggerInfo}
-*重要なセキュリティ問題や設計上の懸念については、必ず人間によるレビューも実施してください*`;
+            const commentBody = '## 🤖 Claude Code レビュー結果\n\n' +
+              reviewContent + '\n\n' +
+              '---\n' +
+              '*このレビューは Claude Code により自動生成されました*\n' +
+              triggerInfo + '\n' +
+              '*重要なセキュリティ問題や設計上の懸念については、必ず人間によるレビューも実施してください*';
 
             // 既存のClaude Codeコメントを検索
             const { data: comments } = await github.rest.issues.listComments({
