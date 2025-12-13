@@ -1,86 +1,57 @@
-name: Claude Code PR Review
+name: Claude Auto Review
 
 on:
   pull_request:
-    types: [opened]
-    branches: [main]
+    types: [opened, synchronize]
 
 jobs:
-  claude-code-review:
+  review:
     runs-on: ubuntu-latest
+    # bot による PR は除外（コスト削減）
     if: |
       github.actor != 'dependabot[bot]' &&
-      github.actor != 'github-actions[bot]'
+      github.actor != 'github-actions[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository
 
     permissions:
       contents: read
       pull-requests: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: anthropics/claude-code-action@v1
         with:
-          node-version: '20.12.2'
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
 
-      - name: Install Claude Code CLI
-        run: npm install -g @anthropic/claude-code@latest
+            ## タスク
+            1. まず `gh pr diff` で PR の変更差分を確認してください
+            2. 以下の観点で日本語レビューを実施してください
 
-      - name: Get changed files
-        id: changed-files
-        run: |
-          CHANGED_FILES=$(gh pr view ${{ github.event.number }} --json files --jq '.files[].path')
-          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            ### セキュリティ
+            - SQLインジェクション、XSS、認証バイパスなどの脆弱性
+            - 機密情報の適切な取り扱い
 
-      - name: Run Claude Code Review
-        id: claude-review
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          REVIEW_PROMPT="このPRの変更内容をレビューしてください。以下の観点で分析してください：
+            ### コード品質
+            - TypeScript型安全性（any型の使用、null/undefinedチェックの欠如）
+            - エラーハンドリングの適切性
+            - 可読性とメンテナンス性
 
-          ## セキュリティ
-          - SQLインジェクション、XSS、認証バイパスなどの脆弱性
-          - 機密情報の適切な取り扱い
+            ### ベストプラクティス
+            - 既存パターンとの一貫性
+            - 責務の分離
 
-          ## コード品質
-          - TypeScript型安全性
-          - エラーハンドリングの適切性
-          - 可読性とメンテナンス性
+            ## 出力形式
+            - 重要な問題のみを指摘
+            - 具体的な修正提案を含める
+            - `gh pr comment` でトップレベルコメント投稿
+            - コード固有の問題は該当行へのインラインコメントで投稿
 
-          ## ベストプラクティス
-          - 既存パターンとの一貫性
-          - 責務の分離
+            Note: PRブランチは既にチェックアウト済みです。
 
-          重要な問題のみを指摘し、具体的な修正提案を含めてください。"
-
-          claude --print \
-            --output-format txt \
-            --allowed-tools "Read Grep Glob" \
-            --add-dir . \
-            "$REVIEW_PROMPT" > claude_review.txt 2>&1
-
-      - name: Post review comment
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const reviewContent = fs.readFileSync('claude_review.txt', 'utf8');
-
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: '## 🤖 Claude Code レビュー結果\n\n' +
-                    reviewContent + '\n\n' +
-                    '---\n' +
-                    '*このレビューは Claude Code により自動生成されました*'
-            });
+          claude_args: '--allowedTools="Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Read,Glob,Grep"'
