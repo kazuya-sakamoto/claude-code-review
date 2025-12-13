@@ -1,0 +1,37 @@
+# CodeRabbit 設定ファイル
+# 公式ドキュメント: https://docs.coderabbit.ai/configure-coderabbit/
+
+# レビュー設定
+reviews:
+  # 自動レビューを無効化（手動トリガーのみ）
+  auto_review:
+    enabled: false
+
+    # 以下のキーワードを含むPRタイトルは無視
+    ignore_title_keywords:
+      - "WIP"
+      - "DO NOT MERGE"
+      - "DRAFT"
+      - "作業中"
+
+    # ドラフトPRは自動レビューしない
+    drafts: false
+
+  # レビューレベル: balanced（デフォルト）
+  # オプション: "strict"（厳格）, "balanced"（バランス）, "chill"（ゆるめ）
+  level: "balanced"
+
+  # ファイル除外設定
+  path_filters:
+    - "!**/*.md"              # マークダウンファイルを除外
+    - "!**/package-lock.json" # package-lock.json を除外
+    - "!**/yarn.lock"         # yarn.lock を除外
+    - "!**/COST_COMPARISON.md" # コスト比較ドキュメントを除外
+    - "!**/README.md"         # READMEを除外
+
+  # レビュー言語
+  language: "ja-JP"  # 日本語でレビュー
+
+# チャット設定
+chat:
+  auto_reply: true  # コメントへの自動返信を有効化
