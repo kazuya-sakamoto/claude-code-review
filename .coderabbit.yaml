@@ -4,6 +4,18 @@
 # グローバル言語設定（最優先）
 language: "ja-JP"
 
+# トーン指示: レビューコメントのトーンやスタイルをカスタマイズ
+# 注意: CodeRabbitは以下のファイルを自動的に読み込んでコーディングガイドラインとして適用します:
+# - .cursor/rules/* (Cursor IDEのルール) - 自動検出・適用
+# - .cursorrules (Cursor IDEのルール) - 自動検出・適用
+# - .github/copilot-instructions.md (GitHub Copilotの指示) - 自動検出・適用
+# - CLAUDE.md (Claude用のコーディングガイドライン) - 自動検出・適用
+# プロジェクト固有のコーディングガイドラインは .cursor/rules/typescript-nodejs.md に定義されています
+tone_instructions: |
+  レビューコメントは丁寧で建設的な表現を使用し、具体的な改善提案を含めてください。
+  指摘する際は、問題点だけでなく、なぜそれが問題なのか、どのように改善できるかを説明してください。
+  開発者の学習と成長を支援する姿勢で、ポジティブで協力的なトーンを心がけてください。
+
 # レビュー設定
 reviews:
   # 自動レビューを無効化（手動トリガーのみ）
@@ -23,6 +35,28 @@ reviews:
   # レビューレベル: balanced（デフォルト）
   # オプション: "strict"（厳格）, "balanced"（バランス）, "chill"（ゆるめ）
   level: "balanced"
+
+  # レビュープロファイル: レビューの厳格さを調整
+  # オプション: "chill"（寛容）, "assertive"（厳格）
+  # level と併用可能（level が全体的な厳格さ、profile がレビューのアプローチ）
+  profile: "assertive"
+
+  # 高レベルサマリー: PR全体の概要を提供するコメントを追加
+  high_level_summary: true
+
+  # シーケンス図の生成: PRのウォークスルーコメント内でシーケンス図を自動生成
+  # API関連のコードレビューで有用
+  sequence_diagrams: true
+
+  # ツールの有効化・無効化
+  # TypeScript/Node.jsプロジェクト向けのツール設定
+  tools:
+    # ESLint: TypeScript/JavaScriptの静的解析
+    eslint:
+      enabled: true
+    # TypeScript: 型チェックとコード解析
+    typescript:
+      enabled: true
 
   # ファイル除外設定
   path_filters:

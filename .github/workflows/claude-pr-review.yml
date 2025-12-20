@@ -1,59 +1,59 @@
-name: Claude Auto Review
+# name: Claude Auto Review
 
-on:
-  pull_request:
-    types: [opened, synchronize]
+# on:
+#   pull_request:
+#     types: [opened, synchronize]
 
-jobs:
-  review:
-    runs-on: ubuntu-latest
-    # bot による PR は除外（コスト削減）
-    if: |
-      github.actor != 'dependabot[bot]' &&
-      github.actor != 'github-actions[bot]' &&
-      github.event.pull_request.head.repo.full_name == github.repository
+# jobs:
+#   review:
+#     runs-on: ubuntu-latest
+#     # bot による PR は除外（コスト削減）
+#     if: |
+#       github.actor != 'dependabot[bot]' &&
+#       github.actor != 'github-actions[bot]' &&
+#       github.event.pull_request.head.repo.full_name == github.repository
 
-    permissions:
-      contents: read
-      pull-requests: write
+#     permissions:
+#       contents: read
+#       pull-requests: write
 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
 
-      - uses: anthropics/claude-code-action@v1
-        with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          show_full_output: true # 🔍 デバッグ用に追加（エラー詳細を表示）
-          prompt: |
-            REPO: ${{ github.repository }}
-            PR NUMBER: ${{ github.event.pull_request.number }}
+#       - uses: anthropics/claude-code-action@v1
+#         with:
+#           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           show_full_output: true # 🔍 デバッグ用に追加（エラー詳細を表示）
+#           prompt: |
+#             REPO: ${{ github.repository }}
+#             PR NUMBER: ${{ github.event.pull_request.number }}
 
-            ## タスク
-            1. まず `gh pr diff` で PR の変更差分を確認してください
-            2. 以下の観点で日本語レビューを実施してください
+#             ## タスク
+#             1. まず `gh pr diff` で PR の変更差分を確認してください
+#             2. 以下の観点で日本語レビューを実施してください
 
-            ### セキュリティ
-            - SQLインジェクション、XSS、認証バイパスなどの脆弱性
-            - 機密情報の適切な取り扱い
+#             ### セキュリティ
+#             - SQLインジェクション、XSS、認証バイパスなどの脆弱性
+#             - 機密情報の適切な取り扱い
 
-            ### コード品質
-            - TypeScript型安全性（any型の使用、null/undefinedチェックの欠如）
-            - エラーハンドリングの適切性
-            - 可読性とメンテナンス性
+#             ### コード品質
+#             - TypeScript型安全性（any型の使用、null/undefinedチェックの欠如）
+#             - エラーハンドリングの適切性
+#             - 可読性とメンテナンス性
 
-            ### ベストプラクティス
-            - 既存パターンとの一貫性
-            - 責務の分離
+#             ### ベストプラクティス
+#             - 既存パターンとの一貫性
+#             - 責務の分離
 
-            ## 出力形式
-            - 重要な問題のみを指摘
-            - 具体的な修正提案を含める
-            - `gh pr comment` でトップレベルコメント投稿
-            - コード固有の問題は該当行へのインラインコメントで投稿
+#             ## 出力形式
+#             - 重要な問題のみを指摘
+#             - 具体的な修正提案を含める
+#             - `gh pr comment` でトップレベルコメント投稿
+#             - コード固有の問題は該当行へのインラインコメントで投稿
 
-            Note: PRブランチは既にチェックアウト済みです。
+#             Note: PRブランチは既にチェックアウト済みです。
 
-          claude_args: '--allowedTools="Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Read,Glob,Grep"'
+#           claude_args: '--allowedTools="Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Read,Glob,Grep"'
