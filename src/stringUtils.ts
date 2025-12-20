@@ -35,3 +35,23 @@ export function getLength(str: string): number {
 export function repeatString(str: string, times: number): string {
   return str.repeat(times);
 }
+
+/**
+ * 文字列をトリムする関数
+ * 意図的な問題:
+ * - any型を使用している
+ * - null/undefinedチェックがない
+ */
+export function trimString(str: any): string {
+  return str.trim();
+}
+
+/**
+ * 配列を結合して文字列にする関数
+ * 意図的な問題:
+ * - 配列の型チェックがない
+ * - セパレーターのデフォルト値がない
+ */
+export function joinArray(arr: any, separator: string): string {
+  return arr.join(separator);
+}

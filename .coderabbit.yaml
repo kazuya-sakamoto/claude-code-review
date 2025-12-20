@@ -1,6 +1,9 @@
 # CodeRabbit 設定ファイル
 # 公式ドキュメント: https://docs.coderabbit.ai/configure-coderabbit/
 
+# グローバル言語設定（最優先）
+language: "ja-JP"
+
 # レビュー設定
 reviews:
   # 自動レビューを無効化（手動トリガーのみ）
@@ -29,8 +32,8 @@ reviews:
     - "!**/COST_COMPARISON.md" # コスト比較ドキュメントを除外
     - "!**/README.md"         # READMEを除外
 
-  # レビュー言語
-  language: "ja-JP"  # 日本語でレビュー
+  # レビュー言語（グローバル設定を上書き可能）
+  language: "ja-JP"  # 日本語でレビューを強制
 
 # チャット設定
 chat:
