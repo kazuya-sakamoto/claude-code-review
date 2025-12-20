@@ -26,15 +26,12 @@ reviews:
 
   # ファイル除外設定
   path_filters:
-    - "!**/*.md"              # マークダウンファイルを除外
+    - "!**/*.md" # マークダウンファイルを除外
     - "!**/package-lock.json" # package-lock.json を除外
-    - "!**/yarn.lock"         # yarn.lock を除外
+    - "!**/yarn.lock" # yarn.lock を除外
     - "!**/COST_COMPARISON.md" # コスト比較ドキュメントを除外
-    - "!**/README.md"         # READMEを除外
-
-  # レビュー言語（グローバル設定を上書き可能）
-  language: "ja-JP"  # 日本語でレビューを強制
+    - "!**/README.md" # READMEを除外
 
 # チャット設定
 chat:
-  auto_reply: true  # コメントへの自動返信を有効化
+  auto_reply: true # コメントへの自動返信を有効化
