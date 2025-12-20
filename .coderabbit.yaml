@@ -1,6 +1,9 @@
 # CodeRabbit 設定ファイル
 # 公式ドキュメント: https://docs.coderabbit.ai/configure-coderabbit/
 
+# グローバル言語設定（最優先）
+language: "ja-JP"
+
 # レビュー設定
 reviews:
   # 自動レビューを無効化（手動トリガーのみ）
@@ -23,15 +26,12 @@ reviews:
 
   # ファイル除外設定
   path_filters:
-    - "!**/*.md"              # マークダウンファイルを除外
+    - "!**/*.md" # マークダウンファイルを除外
     - "!**/package-lock.json" # package-lock.json を除外
-    - "!**/yarn.lock"         # yarn.lock を除外
+    - "!**/yarn.lock" # yarn.lock を除外
     - "!**/COST_COMPARISON.md" # コスト比較ドキュメントを除外
-    - "!**/README.md"         # READMEを除外
-
-  # レビュー言語
-  language: "ja-JP"  # 日本語でレビュー
+    - "!**/README.md" # READMEを除外
 
 # チャット設定
 chat:
-  auto_reply: true  # コメントへの自動返信を有効化
+  auto_reply: true # コメントへの自動返信を有効化

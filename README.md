@@ -28,7 +28,7 @@
 
 → **[COST_COMPARISON.md](./COST_COMPARISON.md)**
 
-## 🚀 使い方（CodeRabbit）
+## 使い方（CodeRabbit）
 
 ### レビューのトリガー
 
@@ -48,7 +48,7 @@ PR 作成後、自動レビューは実行されません（手動トリガー�
 - `@coderabbitai summary` - サマリー再生成
 - `@coderabbitai configuration` - 現在の設定を表示
 
-## 📁 テストファイル
+## テストファイル
 
 `src/stringUtils.ts` には、意図的に以下の問題を含めています：
 
@@ -57,11 +57,3 @@ PR 作成後、自動レビューは実行されません（手動トリガー�
 - バリデーション不足
 
 CodeRabbit がこれらを正しく検出できるか検証しています。
-
-## 🔄 次のステップ
-
-検証が成功したら、`sharefull-frontend` リポジトリへの本番導入を検討します。
-
-## ライセンス
-
-MIT
